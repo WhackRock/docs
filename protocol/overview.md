@@ -31,32 +31,32 @@ graph TB
     subgraph "WHACKROCK Protocol"
         Registry[WhackRockFundRegistry<br/>Factory & Control Center]
         Fund[WhackRockFund<br/>Tokenized Investment Vehicles]
-        MCP[MCP Tools<br/>AI Integration Layer]
+        Plugin[WRTreasury Plugin<br/>AI Integration Layer]
     end
     
     Registry -->|Deploys| Fund
     Fund -->|Managed by| AI[AI Agents via GAME]
-    MCP -->|Integrates| AI
+    Plugin -->|Integrates| AI
 ```
 
 ## Key Features
 
-### 🏭 Factory Pattern
+### Factory Pattern
 - Standardized fund deployment
 - Consistent security guarantees
 - Simplified creation process
 
-### 🔐 Trustless Operation
+### Trustless Operation
 - No custody of user funds
 - Transparent on-chain execution
 - Immutable fund parameters
 
-### 🤖 AI-Native Design
+### AI-Native Design
 - Built for autonomous agents
 - Compatible with GAME framework
-- Future MCP tool integration
+- Complete WRTreasury plugin integration
 
-### 💰 Aligned Incentives
+### Aligned Incentives
 - Performance-based fees
 - Agent reputation building
 - Protocol sustainability

@@ -2,7 +2,7 @@
 
 ## Overview
 
-WHACKROCK is designed from the ground up for AI agent integration, specifically targeting compatibility with Virtuals Protocol's GAME framework. This page details how AI agents interact with the protocol and the future roadmap for enhanced integration.
+WHACKROCK is designed from the ground up for AI agent integration, specifically targeting compatibility with Virtuals Protocol's GAME framework. The WRTreasury plugin provides complete AI agent integration, enabling sophisticated portfolio management strategies.
 
 ## GAME Framework Compatibility
 
@@ -26,44 +26,82 @@ graph TB
     subgraph "WHACKROCK Protocol"
         FUND[WhackRockFund]
         REG[Registry]
+        PLUGIN[WRTreasury Plugin]
     end
     
     GAME -->|Enables| AGENT
+    PLUGIN -->|Integrates| AGENT
     AGENT -->|Manages| FUND
     REG -->|Deploys| FUND
 ```
 
+## WRTreasury Plugin
+
+The WRTreasury plugin provides a complete integration layer between AI agents and WHACKROCK funds, offering comprehensive portfolio management functions through the GAME framework.
+
+### Plugin Features
+
+- **Portfolio Monitoring**: Get current and target compositions
+- **Weight Management**: Set portfolio target weights
+- **Automated Rebalancing**: Trigger rebalancing when needed
+- **Fee Collection**: Automated management fee collection
+- **NAV Tracking**: Monitor fund performance in WETH and USDC
+- **Agent Information**: Access agent configuration and fees
+
+### Installation
+
+```bash
+pip install whackrock-treasury-plugin
+```
+
 ## Agent Capabilities
 
-### Current Functionality
+### Complete Functionality
 
-AI agents assigned to WHACKROCK funds can:
+AI agents using the WRTreasury plugin can:
 
-#### 1. Portfolio Management
-```solidity
-// Agent can adjust portfolio weights
-function setWeights(
-    address[] calldata tokens,
-    uint256[] calldata weights
-) external onlyAgent {
-    // Update target allocations
-}
+#### 1. Portfolio Monitoring
+```python
+# Get current portfolio composition
+current = await agent.execute_function("get_current_portfolio")
+
+# Get target allocation weights
+target = await agent.execute_function("get_target_portfolio")
+
+# Check if rebalancing is needed
+rebalance_check = await agent.execute_function("check_rebalance_needed")
 ```
 
-#### 2. Rebalancing Execution
-```solidity
-// Agent triggers rebalancing when needed
-function rebalance(
-    uint256 minAmountsOut[]
-) external onlyAgent {
-    // Execute portfolio rebalancing
-}
+#### 2. Weight Management
+```python
+# Set portfolio weights in basis points (must sum to 10000)
+weights = [4000, 3000, 3000]  # 40%, 30%, 30%
+await agent.execute_function("set_portfolio_weights", weights=weights)
+
+# Set weights and rebalance in one transaction
+await agent.execute_function("set_weights_and_rebalance", weights=weights)
 ```
 
-#### 3. Fee Collection
-- Agents automatically earn 60% of AUM fees
-- Fees accrue continuously based on time
-- Collection happens during any fund operation
+#### 3. Rebalancing Execution
+```python
+# Manually trigger portfolio rebalancing
+await agent.execute_function("rebalance_portfolio")
+```
+
+#### 4. Performance Tracking
+```python
+# Get fund NAV in both WETH and USDC
+nav = await agent.execute_function("get_fund_nav")
+
+# Get agent fee information
+agent_info = await agent.execute_function("get_agent_info")
+```
+
+#### 5. Fee Collection
+```python
+# Collect accrued management fees
+await agent.execute_function("collect_management_fees")
+```
 
 ### Agent Lifecycle
 
@@ -138,94 +176,80 @@ graph TD
     H --> I[Portfolio Updated]
 ```
 
-## Future MCP Integration
+## Agent Integration Examples
 
-### Model Context Protocol (MCP)
+### Signal-Based Strategy
 
-MCP tools will provide standardized interfaces for AI agents to:
+The WRTreasury plugin includes a complete signal-based rebalancing example that:
 
-#### 1. Market Analysis Tools
-```typescript
-interface MarketAnalysisTool {
-    getCurrentPrices(): Promise<PriceData>;
-    getHistoricalData(period: string): Promise<OHLCV[]>;
-    getTechnicalIndicators(): Promise<Indicators>;
-}
+```python
+# Example from signal.py
+async def derive_weights() -> list[float]:
+    try:
+        # Fetch transcript from Benjamin Cowen's latest video
+        transcript = await fetch_transcript(session)
+        
+        # Use GPT-4o-mini to analyze market sentiment
+        llm_response = await openai.ChatCompletion.acreate(
+            model="gpt-4o-mini",
+            messages=[{"role":"user", "content": PROMPT + transcript}],
+            response_format={"type":"json"},
+            temperature=0.3
+        )
+        
+        # Parse and validate signal
+        parsed = json.loads(llm_response.choices[0].message.content)
+        signal = LLMSignal.model_validate(parsed)
+        return signal.weightSignal
+    except Exception:
+        # Fallback to equal weights
+        return [0.34, 0.33, 0.33]
 ```
 
-#### 2. Portfolio Optimization
-```typescript
-interface PortfolioOptimizer {
-    calculateOptimalWeights(
-        constraints: Constraints
-    ): Promise<WeightAllocation>;
-    
-    assessRisk(
-        portfolio: Portfolio
-    ): Promise<RiskMetrics>;
-}
-```
-
-#### 3. Strategy Templates
-```typescript
-interface StrategyTemplate {
-    name: string;
-    description: string;
-    execute(market: MarketState): WeightAllocation;
-}
-```
-
-### Integration Roadmap
-
-```mermaid
-timeline
-    title MCP Integration Timeline
-    
-    Phase 1 : Basic Tools
-           : Price feeds
-           : Simple rebalancing
-    
-    Phase 2 : Advanced Analytics
-           : Technical indicators
-           : Risk metrics
-    
-    Phase 3 : Strategy Framework
-           : Template library
-           : Backtesting
-    
-    Phase 4 : Multi-Agent
-           : Collaboration
-           : Competition
-```
+This demonstrates how agents can:
+- Fetch external data sources
+- Use AI models for market analysis
+- Convert insights into portfolio weights
+- Handle errors gracefully with fallbacks
 
 ## Agent Development Guide
 
 ### Setting Up an Agent
 
-1. **Deploy through GAME Framework**
-   ```javascript
-   const agent = await game.deployAgent({
-       name: "Alpha Trader",
-       description: "Momentum-based trading agent"
-   });
+1. **Install WRTreasury Plugin**
+   ```bash
+   pip install whackrock-treasury-plugin
    ```
 
-2. **Assign to WHACKROCK Fund**
-   ```javascript
-   await fund.setAgent(agent.address);
+2. **Initialize Plugin with GAME**
+   ```python
+   from whackrock_plugin_gamesdk import get_whackrock_functions
+   from game_sdk.game import Agent
+   
+   class PortfolioAgent(Agent):
+       def __init__(self, fund_address, private_key):
+           super().__init__()
+           
+           # Add WhackRock functions
+           self.functions = get_whackrock_functions(
+               rpc_url="https://mainnet.base.org",
+               fund_address=fund_address,
+               private_key=private_key
+           )
    ```
 
 3. **Implement Strategy Logic**
-   ```javascript
-   async function executeStrategy() {
-       const market = await analyzeMarket();
-       const weights = calculateWeights(market);
-       await fund.setWeights(tokens, weights);
+   ```python
+   async def execute_strategy(self):
+       # Check current portfolio
+       current = await self.execute_function("get_current_portfolio")
        
-       if (needsRebalancing()) {
-           await fund.rebalance(minAmounts);
-       }
-   }
+       # Calculate new weights based on your strategy
+       new_weights = self.calculate_weights()
+       
+       # Update portfolio
+       await self.execute_function("set_weights_and_rebalance", 
+                                   weights=new_weights)
    ```
 
 ### Best Practices
@@ -299,31 +323,15 @@ Fund owners retain emergency powers:
 - Emergency withdraw all assets
 - Pause fund operations
 
-## Future Enhancements
+## Production Ready Features
 
-### Planned Features
+The WRTreasury plugin provides complete functionality for:
 
-1. **Multi-Strategy Support**
-   - Agents managing multiple strategies
-   - Dynamic strategy selection
-   - A/B testing frameworks
-
-2. **Cross-Fund Coordination**
-   - Portfolio correlation management
-   - Shared market intelligence
-   - Collaborative strategies
-
-3. **Advanced Permissions**
-   - Time-locked agent changes
-   - Multi-sig agent control
-   - Graduated autonomy levels
-
-### Research Areas
-
-1. **MEV Protection**: Preventing sandwich attacks on rebalances
-2. **Oracle Integration**: Direct price feeds for agents
-3. **L2 Optimization**: Cross-layer portfolio management
-4. **Privacy Features**: Concealed trading strategies
+1. **Multi-Asset Management**: Support for up to 10 tokens per fund
+2. **Automated Rebalancing**: Threshold-based rebalancing triggers
+3. **Fee Optimization**: Efficient gas usage and fee collection
+4. **Error Handling**: Robust error handling and fallback mechanisms
+5. **Real-time Monitoring**: Live portfolio composition and NAV tracking
 
 ## Getting Started
 
@@ -344,5 +352,6 @@ Fund owners retain emergency powers:
 ## Resources
 
 - [GAME Framework Documentation](https://virtuals.io/docs)
-- [MCP Specification](https://github.com/whackrock/mcp-tools) (Coming Soon)
-- [Agent Examples](https://github.com/whackrock/agent-examples) (Coming Soon)
+- [WRTreasury Plugin Repository](https://github.com/whackrock/WRTreasury)
+- [Signal Example Implementation](https://github.com/whackrock/WRTreasury/blob/main/example/signal.py)
+- [Plugin API Documentation](https://github.com/whackrock/WRTreasury/blob/main/README.md)
