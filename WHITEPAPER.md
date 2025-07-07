@@ -1,7 +1,7 @@
 # WhackRock Protocol: A Trust Layer for AI-Managed Investment Funds
 
-**Version 1.0**  
-**December 2024**
+**Version 1.1**  
+**July 2025**
 
 ---
 
