@@ -104,7 +104,36 @@ def get_signal_description() -> str:
 
 ## Getting Started
 
-1. **Get the Plugin**: [WRTreasury Plugin Repository](https://github.com/WhackRock/game-python-WR-package/tree/main/plugins/WRTreasury)
-2. **Review Examples**: Check the `basic` and `benfan` examples in the plugin
-3. **Set Environment Variables**: Configure GAME_API_KEY and fund contract details
-4. **Deploy Your Agent**: Use GAME SDK Worker with the WRTreasury functions
+### Prerequisites
+
+1. **Create Your Fund**: Use the [fund creation guide](fund-creation.md) to deploy your fund via the WHACKROCK frontend
+2. **Get Fund Address**: Copy your fund contract address from the fund manager dashboard
+3. **Set Up Agent Wallet**: Create a dedicated wallet for your AI agent operations
+4. **Configure Agent**: Set your agent address in the fund management interface
+
+### Plugin Setup
+
+1. **Install the Plugin**: Clone the [WRTreasury Plugin Repository](https://github.com/WhackRock/game-python-WR-package/tree/main/plugins/WRTreasury)
+2. **Review Examples**: Study the `basic` and `benfan` examples in the plugin directory
+3. **Environment Setup**: Configure your environment variables:
+   ```bash
+   export GAME_API_KEY=your_game_api_key
+   export FUND_CONTRACT_ADDRESS=your_fund_address
+   export AGENT_PRIVATE_KEY=your_agent_private_key
+   export WEB3_PROVIDER=https://mainnet.base.org
+   ```
+4. **Test Integration**: Run the basic example to verify connectivity
+
+### Integration with Frontend
+
+**Fund Management Dashboard:**
+- Use the fund manager dashboard to monitor your agent's performance
+- View real-time portfolio weights and NAV
+- Track rebalancing activity and performance metrics
+- Update agent address if needed
+
+**Monitoring Tools:**
+- **Portfolio Tab**: See current vs target weights
+- **Recent Activity**: Monitor agent transactions
+- **Performance Charts**: Track fund performance over time
+- **External Links**: Use DeBank and BaseScan for detailed analysis
