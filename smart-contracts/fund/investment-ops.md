@@ -4,6 +4,8 @@
 
 This guide covers the core investment operations of WhackRockFund: deposits and withdrawals. These functions handle the minting and burning of fund shares while maintaining portfolio balance.
 
+**Smart Contract Reference**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template) - `src/funds/WhackRockFundV6_UniSwap_TWAP.sol`
+
 ## Deposit Function
 
 ### Function Signature

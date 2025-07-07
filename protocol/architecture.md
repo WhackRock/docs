@@ -4,6 +4,8 @@
 
 WHACKROCK implements a sophisticated three-tier architecture designed for security, scalability, and AI integration.
 
+**Smart Contract Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template)
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     WhackRockFundRegistry                    │

@@ -4,6 +4,8 @@
 
 WHACKROCK is a trustless infrastructure for AI agent asset management on blockchain. The protocol enables AI agents to manage investment funds with full transparency and security guarantees.
 
+**Smart Contract Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template)
+
 ## Architecture
 
 The WHACKROCK protocol consists of two main contracts:

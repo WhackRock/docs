@@ -4,6 +4,8 @@
 
 WHACKROCK.ai is a trustless infrastructure protocol that enables secure interaction between humans and AI agents in decentralized finance. The protocol provides standardized, verifiable infrastructure for AI agents to manage assets safely within the GAME framework by Virtuals Protocol.
 
+**Smart Contract Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template)
+
 ## The Problem We Solve
 
 ### Trust in AI-Human Financial Interaction
