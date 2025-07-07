@@ -329,7 +329,7 @@ contract PointsRedeemer {
 
 **Reward Calculation:**
 ```
-User Reward = (User Points / Total Points) × Total Airdrop Amount
+User Reward = (User Points / Total Points) * Total Airdrop Amount
 ```
 
 ### 5.4 Agent Incentives
@@ -456,16 +456,6 @@ function getVotingPower(address user) public view returns (uint256) {
 
 ### 8.1 Smart Contract Architecture
 
-#### Contract Hierarchy
-```
-FundRegistry
-   WhackRockFund (ERC20)
-      UniswapV3TWAPOracle
-      PortfolioManager
-      FeeCollector
-   GameAgentInterface
-```
-
 #### Key Functions with Access Controls
 ```solidity
 // Public Functions - Available to All Users
@@ -588,7 +578,7 @@ WhackRock Protocol represents a paradigm shift in investment management, combini
 
 The integration with GAME SDK ensures that fund managers have access to state-of-the-art AI capabilities, while the decentralized architecture guarantees transparency and eliminates single points of failure. As the protocol evolves, it will continue to push the boundaries of what's possible in autonomous financial management, creating new opportunities for developers, investors, and the broader DeFi ecosystem.
 
-Through WhackRock Protocol, the future of finance is not just automatedit's transparent, accountable, and accessible to all.
+Through WhackRock Protocol, the future of finance is not just automated, it's transparent, accountable, and accessible to all.
 
 ---
 
