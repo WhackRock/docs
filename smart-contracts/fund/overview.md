@@ -2,158 +2,104 @@
 
 ## Introduction
 
-WhackRockFund is the core investment vehicle of the WHACKROCK protocol. Each fund is an independent smart contract that implements a tokenized, multi-asset portfolio managed by an AI agent or human operator.
+WhackRockFund is a smart contract that implements tokenized investment funds managed by AI agents. Each fund accepts WETH deposits and manages a multi-asset portfolio through automated rebalancing.
 
 ## Key Features
 
-### 🪙 ERC20 Tokenized Shares
-- Fully compliant ERC20 tokens represent fund ownership
-- Shares are minted on deposit and burned on withdrawal
-- Standard token functionality enables DeFi composability
+### ERC20 Tokenized Shares
+- Fund shares are ERC20 tokens representing ownership
+- Shares minted on WETH deposits, burned on withdrawals
+- Share price based on fund NAV
 
-### 📊 Multi-Asset Portfolios
-- Support for multiple ERC20 tokens
-- Configurable target weights for each asset
-- Automated portfolio management
+### Multi-Asset Portfolios  
+- Supports multiple approved ERC20 tokens
+- Target weights set by authorized agent
+- Automatic rebalancing when weights deviate >1%
 
-### ⚖️ Automated Rebalancing
-- Maintains target allocations within deviation thresholds
-- Triggered automatically on deposits/withdrawals
-- Manual rebalancing available to agents
+### WETH-Only Deposits
+- Investors deposit WETH only (not ETH)
+- Minimum deposit: 0.01 WETH
+- Withdrawals provide proportional basket of all fund assets
 
-### 💰 Fee Collection
-- Time-based AUM fees collected via share minting
-- 60/40 split between agent and protocol
-- Non-dilutive to NAV per share
+### Agent Management
+- Authorized agent can set target weights and trigger rebalancing
+- Agent cannot withdraw funds, only manage allocations
+- Fund owner can change agent anytime
 
 ## Contract Details
 
-- **License**: BUSL-1.1
-- **Solidity Version**: ^0.8.20
-- **Upgradeability**: Non-upgradeable (immutable)
-- **Dependencies**: OpenZeppelin Contracts v5.0+
+- **Version**: WhackRockFundV6_UniSwap_TWAP
+- **License**: BUSL-1.1  
+- **Solidity**: ^0.8.20
+- **DEX Integration**: Uniswap V3 with TWAP oracles
 
 ## Inheritance Structure
 
 ```solidity
 contract WhackRockFund is 
-    IWhackRockFund,    // Interface implementation
-    ERC20,             // Token functionality
-    Ownable            // Access control
+    IWhackRockFund,          // Interface
+    ERC20,                   // Token functionality  
+    Ownable,                 // Access control
+    UniswapV3TWAPOracle,     // Price feeds
+    IUniswapV3SwapCallback   // DEX integration
 ```
 
-## Design Philosophy
-
-### 1. Security First
-- Non-upgradeable for investor protection
-- Minimum deposit requirements prevent attacks
-- Emergency functions for owner intervention
-
-### 2. Gas Efficiency
-- Custom errors reduce deployment costs
-- Optimized storage patterns
-- Batch operations where possible
-
-### 3. User Experience
-- Simple WETH-only deposits
-- Proportional withdrawals in all assets
-- Transparent fee structure
-
-### 4. Agent Flexibility
-- Adjustable portfolio weights
-- Manual rebalancing triggers
-- Performance-based fee collection
-
-## Core Concepts
+## Core Mechanics
 
 ### Net Asset Value (NAV)
-The fund continuously calculates its total value in WETH (accounting asset):
-- Sum of all token balances converted to WETH value
+- Total fund value calculated in WETH (accounting asset)
+- Includes all token balances converted to WETH via TWAP oracles
 - Used for share price calculations
-- Reported in both WETH and USDC terms
 
-### Share Price Mechanism
-- Initial shares: 1:1 with WETH deposited
-- Subsequent shares: `deposit * totalShares / NAV`
-- Ensures fair value for all investors
+### Share Price 
+- First deposit: 1:1 with WETH deposited
+- Subsequent deposits: `shares = deposit * totalShares / NAV`
+- Withdrawals burn shares proportionally
 
-### Rebalancing Logic
-1. Calculate current vs target allocations
-2. Identify tokens to buy/sell
-3. Execute swaps via Aerodrome DEX
-4. Maintain slippage protection
+### Rebalancing Process
+1. Agent sets new target weights in basis points (must sum to 10000)
+2. System calculates deviations from current weights
+3. If deviation >1%, rebalancing can be triggered
+4. Swaps execute through Uniswap V3 pools
+5. TWAP oracles provide slippage protection
 
-### Fee Accrual
-- Fees accrue continuously over time
-- Collection mints new shares to fee recipients
-- Formula: `(NAV × feeRate × timeElapsed) / (365 days × 10000)`
+### Fee Structure
+- Maximum AUM fee: 10% annually (1000 basis points)
+- Default split: 60% agent, 40% protocol (6000/4000 basis points)
+- Fees collected by minting new shares to recipients
 
-## Integration Architecture
+## Fund Operations
 
-```mermaid
-graph TD
-    subgraph "External Interactions"
-        Investor[Investors]
-        Agent[AI Agent]
-        Owner[Fund Owner]
-        DEX[Aerodrome DEX]
-    end
-    
-    subgraph "WhackRockFund"
-        Shares[ERC20 Shares]
-        Portfolio[Token Portfolio]
-        Rebalancer[Rebalancing Engine]
-        Fees[Fee Collector]
-    end
-    
-    Investor -->|Deposit WETH| Shares
-    Investor -->|Withdraw| Portfolio
-    Agent -->|Set Weights| Rebalancer
-    Agent -->|Collect Fees| Fees
-    Owner -->|Emergency| Portfolio
-    Rebalancer -->|Swap| DEX
-```
+### Deposits
+- Only WETH accepted (not ETH)
+- Minimum: 0.01 WETH
+- Shares minted proportional to NAV
+- Automatic rebalancing triggered after deposits
 
-## Lifecycle Example
+### Withdrawals  
+- Burn shares to receive proportional basket
+- Receive all fund tokens, not just WETH
+- ERC20 allowance mechanism supported
 
-1. **Creation**: Registry deploys fund with initial parameters
-2. **First Deposit**: Investor deposits WETH, receives shares
-3. **Rebalancing**: Automatic swap to target allocations
-4. **Management**: Agent adjusts weights based on strategy
-5. **Fee Collection**: Periodic minting of fee shares
-6. **Withdrawal**: Investor burns shares, receives asset basket
+### Agent Functions
+- `setTargetWeights`: Update portfolio targets
+- `setTargetWeightsAndRebalanceIfNeeded`: Atomic weight update + rebalancing
+- `triggerRebalance`: Manual rebalancing execution
 
-## Key Differences from Traditional Funds
+### Owner Functions
+- `setAgent`: Change authorized agent
+- `collectAgentManagementFee`: Collect accrued fees
 
-| Feature | Traditional Fund | WhackRockFund |
-|---------|-----------------|----------------|
-| Custody | Centralized | Smart Contract |
-| Transparency | Limited | Full On-chain |
-| Access | Restricted | Permissionless |
-| Fees | Hidden/Complex | Transparent |
-| Settlement | T+2 Days | Instant |
-| Minimum Investment | High | 0.01 ETH |
+## Key Constraints
 
-## Security Considerations
+- WETH-only deposits (no direct ETH)
+- Basket withdrawals only (no single-asset)
+- Agent authorization required for portfolio changes
+- 1% rebalancing threshold minimum
+- 10% maximum annual AUM fees
 
-### Economic Security
-- Minimum deposits prevent share price manipulation
-- Slippage limits protect against sandwich attacks
-- Fee caps prevent excessive extraction
+## Related Documentation
 
-### Access Control
-- Owner can change agents and emergency withdraw
-- Agents can only manage portfolio and collect fees
-- Public can only deposit and withdraw
-
-### Technical Security
-- No external calls in critical paths
-- SafeERC20 for all token transfers
-- Comprehensive error handling
-
-## Next Steps
-
-- [Constants](constants.md) - Configuration parameters
-- [State Variables](state-variables.md) - Contract storage
-- [Investment Operations](investment-ops.md) - Deposit/withdraw guide
-- [Portfolio Management](portfolio-mgmt.md) - Rebalancing details
+- [Investment Operations](investment-ops.md) - Deposit/withdraw details
+- [Portfolio Management](portfolio-mgmt.md) - Rebalancing mechanics
+- [Fee Collection](fee-collection.md) - Fee structure details
