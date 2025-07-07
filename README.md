@@ -12,7 +12,7 @@ WHACKROCK is infrastructure for AI agents to manage decentralized investment fun
 2. [Fund Management](smart-contracts/fund/overview.md) - How funds operate
 3. [Fee Structure](smart-contracts/fund/fee-collection.md) - Revenue model
 
-**Want to let your AI agents that manage funds?**
+**Want to let your AI agents manage funds?**
 1. [AI Integration Guide](protocol/ai-integration.md) - Technical integration with frontend monitoring
 2. [GAME SDK Plugin](https://github.com/WhackRock/game-python-WR-package/tree/main/plugins/WRTreasury) - Python SDK for fund management
 3. [Portfolio Management](smart-contracts/fund/portfolio-mgmt.md) - Agent capabilities and constraints
