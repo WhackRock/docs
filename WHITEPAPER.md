@@ -251,17 +251,100 @@ function collectAgentManagementFee() external {
 }
 ```
 
-### 5.2 Agent Incentives
+### 5.2 Staking and Protocol Rewards
+
+#### Staking Mechanism
+WhackRock implements a comprehensive staking system to align long-term incentives and distribute protocol rewards:
+
+**Staking Features:**
+- **Single-Asset Staking**: Stake WROCK tokens to earn protocol rewards
+- **Flexible Lock Periods**: Choose staking duration for multiplied rewards
+- **Auto-Compounding**: Automatic reinvestment of earned rewards
+- **Liquid Staking**: Receive stWROCK tokens representing staked position
+
+#### Reward Distribution
+```solidity
+// Staking rewards calculation
+function calculateRewards(address staker) public view returns (uint256) {
+    StakeInfo memory stake = stakes[staker];
+    uint256 timeStaked = block.timestamp - stake.timestamp;
+    uint256 baseReward = (stake.amount * rewardRate * timeStaked) / SECONDS_PER_YEAR;
+    uint256 multiplier = getLockMultiplier(stake.lockPeriod);
+    return baseReward * multiplier / 100;
+}
+```
+
+**Reward Sources:**
+1. **Protocol Fees**: Percentage of all fund management fees
+2. **Performance Fees**: Share of successful fund performance
+3. **Ecosystem Growth**: Treasury allocations for growth incentives
+4. **Partner Rewards**: Integration and partnership revenues
+
+### 5.3 Points System and Airdrop Mechanism
+
+#### Points Accumulation
+Users earn points through various protocol interactions:
+
+**Point-Earning Activities:**
+- **Staking Duration**: 100 points per WROCK per day staked
+- **Fund Investment**: 50 points per $100 invested per day
+- **Liquidity Provision**: 150 points per $100 in LP per day
+- **Protocol Usage**: 10 points per transaction
+- **Referrals**: 500 points per successful referral
+
+#### Points Redeemer Contract
+The Points Redeemer Contract enables users to claim airdropped rewards based on accumulated points:
+
+```solidity
+contract PointsRedeemer {
+    mapping(address => uint256) public userPoints;
+    mapping(uint256 => AirdropRound) public airdropRounds;
+    
+    struct AirdropRound {
+        uint256 totalRewards;
+        uint256 totalPoints;
+        uint256 rewardPerPoint;
+        mapping(address => bool) claimed;
+    }
+    
+    function claimAirdrop(uint256 roundId) external {
+        AirdropRound storage round = airdropRounds[roundId];
+        require(!round.claimed[msg.sender], "Already claimed");
+        
+        uint256 userReward = userPoints[msg.sender] * round.rewardPerPoint;
+        round.claimed[msg.sender] = true;
+        
+        IERC20(rewardToken).transfer(msg.sender, userReward);
+        emit AirdropClaimed(msg.sender, roundId, userReward);
+    }
+}
+```
+
+#### Airdrop Schedule
+**Regular Airdrops:**
+- **Monthly Rewards**: Distribution of protocol fees to point holders
+- **Quarterly Bonuses**: Additional rewards for consistent participants
+- **Special Events**: Partnership tokens and new feature launches
+- **Milestone Rewards**: Achievements-based token distributions
+
+**Reward Calculation:**
+```
+User Reward = (User Points / Total Points) × Total Airdrop Amount
+```
+
+### 5.4 Agent Incentives
 
 #### Performance Alignment
 - Fees tied to fund performance metrics
 - Long-term value creation incentives
 - Reputation-based agent selection
+- Staking requirements for fund managers
 
 #### Economic Security
 - Agent stake requirements for fund management
 - Slashing mechanisms for poor performance
 - Insurance funds for investor protection
+- Points multipliers for successful agents
 
 ---
 
@@ -336,11 +419,24 @@ function emergencyWithdraw() external onlyOwner {
 - Community-driven protocol upgrades
 - Parameter adjustment proposals
 - Agent certification processes
+- Staking-weighted voting power
 
-#### Governance Token
-- Voting rights for protocol changes
-- Fee distribution to stakeholders
-- Staking mechanisms for security
+#### Governance Token (WROCK)
+- **Voting Rights**: Proportional to staked WROCK amount
+- **Fee Distribution**: Stakers receive share of protocol fees
+- **Lock Multipliers**: Longer stakes receive more voting power
+- **Delegation**: Ability to delegate voting power while staking
+
+#### Voting Power Calculation
+```solidity
+function getVotingPower(address user) public view returns (uint256) {
+    StakeInfo memory stake = stakes[user];
+    uint256 basePower = stake.amount;
+    uint256 lockMultiplier = getLockMultiplier(stake.lockPeriod);
+    uint256 loyaltyBonus = calculateLoyaltyBonus(user);
+    return (basePower * lockMultiplier * loyaltyBonus) / 10000;
+}
+```
 
 ### 7.2 Agent Ecosystem
 
@@ -430,11 +526,19 @@ Agents interact with fund contracts through:
 - Access to multiple AI strategies
 - Diversified portfolio management
 - Professional-grade investment tools
+- Staking rewards for long-term holders
 
 #### Risk Management
 - Transparent performance tracking
 - On-demand liquidity
 - Regulated smart contract environment
+- Insurance through protocol reserves
+
+#### Staking Benefits
+- **Protocol Rewards**: Earn fees from all fund operations
+- **Governance Power**: Influence protocol development
+- **Airdrop Eligibility**: Access to partner token distributions
+- **Points Accumulation**: Build position for future rewards
 
 ### 9.3 For Fund Managers
 
