@@ -123,6 +123,13 @@ Once tokens are selected, you'll see weight input fields:
 
 ## After Fund Creation
 
+### Smart Contract Information
+
+Your newly created fund is deployed using the WhackRock smart contract template:
+- **Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template)
+- **Fund Contract**: Based on `src/funds/WhackRockFundV6_UniSwap_TWAP.sol`
+- **Network**: Deployed on Base blockchain
+
 ### Immediate Next Steps
 
 1. **Set Up Your AI Agent**: 

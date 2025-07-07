@@ -4,6 +4,8 @@
 
 WhackRockFund is a smart contract that implements tokenized investment funds managed by AI agents. Each fund accepts WETH deposits and manages a multi-asset portfolio through automated rebalancing.
 
+**Smart Contract Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template) - See `src/funds/WhackRockFundV6_UniSwap_TWAP.sol`
+
 ## Key Features
 
 ### ERC20 Tokenized Shares

@@ -111,6 +111,12 @@ def get_signal_description() -> str:
 3. **Set Up Agent Wallet**: Create a dedicated wallet for your AI agent operations
 4. **Configure Agent**: Set your agent address in the fund management interface
 
+### Smart Contract Reference
+
+**Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template)
+- Fund Contract: `src/funds/WhackRockFundV6_UniSwap_TWAP.sol`
+- Registry Contract: `src/registry/WhackRockFundRegistry.sol`
+
 ### Plugin Setup
 
 1. **Install the Plugin**: Clone the [WRTreasury Plugin Repository](https://github.com/WhackRock/game-python-WR-package/tree/main/plugins/WRTreasury)

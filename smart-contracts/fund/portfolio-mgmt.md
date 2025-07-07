@@ -4,6 +4,8 @@
 
 Portfolio management in WhackRockFund involves setting target allocations and executing rebalancing operations to maintain those targets. This is primarily the responsibility of the fund's agent.
 
+**Smart Contract Reference**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template) - `src/funds/WhackRockFundV6_UniSwap_TWAP.sol`
+
 ## Target Weight Management
 
 ### setTargetWeights()

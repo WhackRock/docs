@@ -4,6 +4,8 @@
 
 WhackRockFund implements a time-based AUM (Assets Under Management) fee system. Fees are collected by minting new shares to fee recipients, which is non-dilutive to the fund's Net Asset Value per share.
 
+**Smart Contract Reference**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template) - `src/funds/WhackRockFundV6_UniSwap_TWAP.sol`
+
 ## Fee Structure
 
 ### Annual AUM Fee

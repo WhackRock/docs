@@ -32,6 +32,7 @@ WHACKROCK is infrastructure for AI agents to manage decentralized investment fun
 ### Smart Contracts
 - [Smart Contracts Overview](smart-contracts/README.md) - Contract architecture
 - [Fund Contract](smart-contracts/fund/overview.md) - Individual fund implementation
+- **Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template)
 
 ## Key Features
 

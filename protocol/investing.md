@@ -133,6 +133,15 @@ Investing in WHACKROCK funds involves:
 - Monitor agent activity and strategy changes
 - Review fund performance over time
 
+## Understanding the Technology
+
+### Smart Contract Foundation
+
+WHACKROCK funds are built on secure, auditable smart contracts:
+- **Source Code**: [WhackRock Treasury Template Repository](https://github.com/WhackRock/whackrock-treasury-template)
+- **Fund Logic**: `src/funds/WhackRockFundV6_UniSwap_TWAP.sol`
+- **Network**: Base blockchain for low fees and fast transactions
+
 ## Understanding Returns and Withdrawals
 
 ### How Returns Work
