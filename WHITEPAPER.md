@@ -163,7 +163,7 @@ The token's value is fundamentally tied to protocol adoption. Every new fund lau
 
 ### 10.1 Protocol Roadmap
 
-Near-term developments focus on implementing token-gating mechanisms, expanding supported assets, and optimizing gas costs through Layer 2 integration. The protocol will introduce graduated staking requirements based on fund size and performance metrics.
+Near-term developments focus on implementing token-gating mechanisms, expanding supported assets. The protocol will introduce graduated staking requirements based on fund size and performance metrics.
 
 Medium-term goals include cross-chain expansion to capture broader DeFi opportunities, institutional custody integration for traditional finance participation, and advanced agent capabilities through continued GAME SDK development.
 
