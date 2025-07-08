@@ -7,38 +7,19 @@
 
 ## Abstract
 
-WhackRock Protocol establishes a decentralized infrastructure for AI-managed investment funds, providing transparency, accountability, and standardization to autonomous financial management. Built on Base, the protocol enables AI agents to manage tokenized investment vehicles while ensuring investor protection through immutable smart contracts and on-chain transparency.
+WhackRock Protocol establishes a decentralized infrastructure for AI-managed investment funds on Base, enabling AI agents to manage tokenized investment vehicles while ensuring investor protection through immutable smart contracts. The protocol integrates with GAME SDK (Virtuals Protocol) to provide sophisticated AI tooling for agentic portfolio management.
 
-The protocol integrates with the GAME SDK (Virtuals Protocol) to provide sophisticated AI agent capabilities, allowing developers to deploy autonomous fund managers that can make investment decisions, rebalance portfolios, and collect performance-based fees in a trustless environment.
+The WROCK token captures value from the entire ecosystem through protocol fee distribution. As total assets under management (AUM) grow across all funds, WROCK stakers receive 40% of all management fees collected, creating direct alignment between protocol growth and token value. With planned token-gating for fund creation and management, WROCK becomes essential infrastructure for participating in AI investments.
 
-**Key Security Features:**
-- AI agents can ONLY trade pre-specified, highly liquid tokens defined at fund creation
-- Token lists are IMMUTABLE - agents cannot add new tokens or change approved assets
-- Agents have NO withdrawal capabilities - only investors can redeem their shares
-- All agent actions are limited to portfolio weight adjustments and rebalancing
-- Smart contracts enforce all constraints, preventing any unauthorized actions
+AI agents operate within strict security constraints: they can only trade pre-specified tokens defined at fund creation, cannot add new assets or withdraw funds, and are limited to portfolio weight adjustments and rebalancing. All constraints are enforced at the smart contract level, ensuring investor assets remain secure while enabling sophisticated autonomous strategies
 
 ---
 
 ## 1. Introduction
 
-### 1.1 The Problem
+The emergence of AI-driven investment strategies has created significant opportunities, but current implementations operate in black boxes without verifiable performance tracking, create centralized points of failure, and lack standardized frameworks for comparison.
 
-The emergence of AI-driven investment strategies has created significant opportunities, but current implementations suffer from critical limitations:
-
-- **Lack of Accountability**: AI investment decisions operate in black boxes without verifiable performance tracking
-- **Centralized Risk**: Funds managed by traditional entities create single points of failure
-- **Opaque Operations**: Investors cannot verify AI decision-making processes or fund management activities
-- **Inconsistent Standards**: No standardized framework for comparing AI fund performance
-
-### 1.2 The Solution
-
-WhackRock Protocol addresses these challenges by providing:
-
-- **Transparent Operations**: All fund activities recorded immutably on-chain
-- **Standardized Infrastructure**: Uniform smart contract interfaces for fund creation and management
-- **Decentralized Architecture**: No single point of control or failure
-- **Performance Accountability**: Verifiable track records for AI agents and fund managers
+WhackRock Protocol solves these challenges through transparent on-chain operations, standardized smart contract infrastructure, decentralized architecture, and verifiable performance tracking. Every fund action is recorded immutably, creating accountability and trust in AI-managed investments
 
 ---
 
@@ -46,63 +27,19 @@ WhackRock Protocol addresses these challenges by providing:
 
 ### 2.1 Core Components
 
-#### Fund Registry
-The central registry contract maintains a comprehensive directory of all WhackRock funds, providing:
-- Fund discovery and enumeration
-- Metadata management
-- Performance tracking
-- Agent assignment verification
+The protocol consists of three main components working in harmony:
 
-#### Fund Contracts (WhackRockFundV6_UniSwap_TWAP)
-Individual fund smart contracts implementing:
-- ERC20 tokenized shares
-- Portfolio weight management
-- Automatic rebalancing mechanisms
-- Fee collection and distribution
-- TWAP-based price oracles for accurate valuation
+**Fund Registry**: A central directory maintaining all WhackRock funds, enabling discovery, performance tracking, and agent verification.
 
-#### AI Agent Integration
-Integration layer connecting fund contracts with AI agents through:
-- Standardized function interfaces
-- Permission-based access controls
-- Performance-based fee structures
-- Decision audit trails
+**Fund Contracts**: Individual ERC20-based investment vehicles implementing portfolio management, automatic rebalancing, fee collection, and TWAP-based pricing for accurate valuations.
+
+**AI Agent Integration**: The connection layer between GAME SDK agents and fund contracts, providing standardized interfaces, permission controls, and audit trails for all decisions
 
 ### 2.2 GAME SDK Integration with Security Constraints
 
-WhackRock Protocol leverages the GAME SDK (Virtuals Protocol) to provide sophisticated AI agent capabilities while maintaining strict security constraints:
+WhackRock leverages GAME SDK to power AI agents while maintaining strict security through smart contract enforcement. Agents receive limited permissions at deployment, restricting them to portfolio weight adjustments and rebalancing triggers only.
 
-#### Agent Deployment with Limited Permissions
-```solidity
-// Example agent configuration with restricted permissions
-Worker gameAgent = Worker({
-    api_key: GAME_API_KEY,
-    description: "Investment Signal Analyzer",
-    instruction: "Analyze market data and generate portfolio weights...",
-    model_name: "Llama-3.1-405B-Instruct",
-    allowed_actions: ["SET_WEIGHTS", "TRIGGER_REBALANCE"]  // Cannot withdraw or transfer funds
-});
-```
-
-#### Predefined Action Constraints
-AI agents are strictly limited to the following actions:
-- **Set Portfolio Weights**: Only adjust target allocation percentages
-- **Trigger Rebalancing**: Execute trades within predefined token lists
-- **Collect Fees**: Only through protocol-defined mechanisms
-
-**Agents CANNOT**:
-- Withdraw or transfer funds to external addresses
-- Add new tokens to the approved list
-- Change fund parameters or security settings
-- Access private keys or execute arbitrary transactions
-- Bypass smart contract restrictions
-
-#### Token Restrictions
-Agents can only trade:
-- **Prespecified Token Lists**: Defined at fund creation and immutable
-- **Highly Liquid Assets**: Only tokens meeting minimum liquidity thresholds
-- **Verified Contracts**: Tokens must pass security validation
-- **No Dynamic Additions**: Cannot add new tokens post-deployment
+Critical security constraints are hardcoded: agents cannot withdraw funds, add new tokens, change fund parameters, or execute arbitrary transactions. Token lists are immutable after fund creation, ensuring agents can only trade pre-approved, highly liquid assets that passed security validation. This sandbox approach enables sophisticated AI strategies while protecting investor assets
 
 ---
 
@@ -110,75 +47,15 @@ Agents can only trade:
 
 ### 3.1 Creating a Fund with GAME Agents
 
-Fund creators can deploy new investment vehicles through a streamlined process:
+Fund creation requires configuring a GAME agent with specific investment strategies and deploying an immutable fund contract. The process involves selecting verified tokens (which cannot be changed post-deployment), setting initial portfolio weights, and configuring security parameters like slippage protection and rebalance thresholds.
 
-#### Prerequisites
-- GAME API key and agent configuration
-- Initial token selection and target weights
-- Fund parameters (fees, rebalancing thresholds)
-- Agent strategy description
+Each fund operates with hardcoded constraints: agents receive only weight adjustment and rebalancing permissions, token lists remain immutable, and all security parameters are enforced at the contract level. This ensures consistent security across all funds while allowing diverse investment strategies
 
-#### Deployment Process with Security Safeguards
-1. **Token Whitelist Definition**: Select only highly liquid, verified tokens
-2. **Agent Setup**: Configure GAME agent with limited permissions
-3. **Fund Deployment**: Deploy immutable fund contract with security constraints
-4. **Registry Registration**: Register fund with transparency requirements
-5. **Initial Configuration**: Set portfolio weights within allowed tokens only
+### 3.2 AI Fund Management Operations
 
-#### Example Fund Creation with Security Parameters
-```javascript
-const fundParams = {
-  name: "AI Momentum Strategy",
-  symbol: "AIMS",
-  description: "AI-driven momentum trading strategy",
-  allowedTokens: ["WETH", "USDC", "WBTC"],  // IMMUTABLE - Cannot be changed post-deployment
-  targetWeights: [4000, 3000, 3000], // Basis points
-  securityParams: {
-    maxSlippage: 100,  // 1% max slippage protection
-    minLiquidity: 1000000,  // $1M minimum liquidity requirement
-    rebalanceThreshold: 500,  // 5% deviation trigger
-    emergencyPause: true  // Allow emergency pause by owner only
-  },
-  gameAgentConfig: {
-    strategy: "momentum_trading",
-    riskTolerance: "moderate",
-    rebalanceFrequency: "daily",
-    permissions: ["SET_WEIGHTS", "TRIGGER_REBALANCE"]  // Restricted action set
-  }
-};
-```
+GAME agents operate within strict boundaries enforced by smart contracts. They continuously monitor market conditions for whitelisted tokens, calculate optimal portfolio weights, and trigger rebalancing when allocations deviate from targets.
 
-### 3.2 AI Fund Management with Security Constraints
-
-#### Autonomous Operations Within Strict Boundaries
-GAME agents manage funds through predefined, secure mechanisms:
-- **Continuous Monitoring**: Real-time surveillance of ONLY whitelisted tokens
-- **Signal Analysis**: Processing data within approved parameters
-- **Portfolio Optimization**: Weight adjustments ONLY within allowed tokens
-- **Risk Management**: Enforced by smart contract, not agent discretion
-
-#### Agent Responsibilities and Limitations
-**What Agents CAN Do:**
-- Monitor market conditions for whitelisted tokens only
-- Calculate optimal weights within the predefined token set
-- Trigger rebalancing through secure smart contract functions
-- Collect fees ONLY through protocol-defined mechanisms
-
-**What Agents CANNOT Do:**
-- Add or remove tokens from the approved list
-- Withdraw funds to any address
-- Execute trades outside the whitelisted token pairs
-- Override smart contract security parameters
-- Access user funds directly
-- Execute arbitrary contract calls
-
-#### Security-First Performance Tracking
-All agent actions are transparent and auditable:
-- Every weight change requires smart contract validation
-- All trades execute through secure DEX integrations
-- Fund assets remain in the smart contract at all times
-- Users can withdraw their proportional share anytime
-- Emergency pause functionality for extreme scenarios
+The security model is absolute: agents cannot add tokens, withdraw funds, or override any security parameters. Every action requires smart contract validation, trades execute through secure DEX integrations, and fund assets never leave the contract's custody. Users maintain full control with the ability to withdraw their proportional share at any time
 
 ---
 
@@ -186,165 +63,41 @@ All agent actions are transparent and auditable:
 
 ### 4.1 Investor Participation
 
-#### Investment Process
-1. **Fund Discovery**: Browse available funds in registry
-2. **Due Diligence**: Review agent performance and strategy
-3. **Investment**: Deposit WETH to receive tokenized shares
-4. **Monitoring**: Track performance through transparent metrics
-
-#### Share Tokenization
-WhackRock funds issue ERC20 tokens representing proportional ownership:
-- Dynamic pricing based on NAV per share
-- Automatic share minting/burning on deposits/withdrawals
-- Proportional claim to underlying assets
-
-#### Withdrawal Mechanism
-Investors can exit positions through:
-- **Basket Withdrawals**: Receive proportional share of all fund assets
-- **On-Demand Liquidity**: No lock-up periods or withdrawal restrictions
-- **Transparent Pricing**: NAV calculated using TWAP oracles
+Investors participate by depositing WETH into funds and receiving ERC20 shares representing proportional ownership. Share pricing dynamically adjusts based on NAV, with automatic minting on deposits and burning on withdrawals. Investors maintain full liquidity with no lock-ups, receiving their proportional share of all fund assets upon withdrawal. TWAP oracles ensure fair pricing for all transactions.
 
 ### 4.2 Portfolio Rebalancing
 
-#### Automated Rebalancing
-Fund contracts automatically rebalance when:
-- Portfolio weights deviate beyond threshold (default: 5%)
-- Agent signals trigger rebalancing
-- Major market events require position adjustments
-
-#### Rebalancing Process
-1. **Deviation Detection**: Monitor current vs. target weights
-2. **Agent Consultation**: Verify rebalancing necessity
-3. **Trade Execution**: Swap tokens through DEX integrations
-4. **Weight Restoration**: Achieve target portfolio allocation
-
-#### DEX Integration
-Rebalancing utilizes:
-- Uniswap V3 for primary liquidity
-- TWAP oracles for fair pricing
-- Slippage protection mechanisms
-- MEV-resistant execution strategies
+Funds automatically rebalance when portfolio weights deviate beyond configured thresholds (typically 1-5%). The rebalancing process monitors weight deviations, executes trades through Uniswap V3, and restores target allocations. TWAP pricing and slippage protection ensure fair execution while protecting against MEV attacks
 
 ---
 
-## 5. Economic Model
+## 5. Economic Model and WROCK Value Accrual
 
-### 5.1 Fee Structure
+### 5.1 Fee Structure and Distribution
 
-#### Management Fees
-- **Agent Fees**: Performance-based compensation for AI agents
-- **Protocol Fees**: Revenue for protocol development and maintenance
-- **Fee Distribution**: Automatic allocation through smart contracts
+The protocol generates revenue through annual management fees on all funds (up to 10% maximum, typically 2-5%). These fees are collected by minting new fund shares and distributing them according to a fixed split: 60% to the agent managing the fund and 40% to the protocol.
 
-#### Fee Collection Mechanism
-```solidity
-function collectAgentManagementFee() external {
-    uint256 timeElapsed = block.timestamp - lastFeeCollection;
-    uint256 annualizedFeeValue = (nav * agentAumFeeBps * timeElapsed) / 
-                                (TOTAL_BASIS_POINTS * 365 days);
-    
-    uint256 agentShares = (annualizedFeeValue * AGENT_FEE_SHARE) / nav;
-    uint256 protocolShares = (annualizedFeeValue * PROTOCOL_FEE_SHARE) / nav;
-    
-    _mint(agentFeeWallet, agentShares);
-    _mint(protocolFeeRecipient, protocolShares);
-}
-```
+The 40% protocol share flows directly to WROCK stakers, creating a perpetual value stream that scales with total AUM. As more funds launch and grow, WROCK stakers receive an increasing share of management fees across the entire ecosystem. This mechanism ensures that WROCK appreciation is directly tied to protocol adoption and success
 
 ### 5.2 Staking and Protocol Rewards
 
-#### Staking Mechanism
-WhackRock implements a comprehensive staking system to align long-term incentives and distribute protocol rewards:
+WROCK staking provides the primary value accrual mechanism for token holders. The staking contract implements flexible lock periods from 6 months to 2 years, with longer locks earning bonus points multipliers (0% for 6 months, 50% for 9 months, 100% for 1 year).
 
-**Staking Features:**
-- **Single-Asset Staking**: Stake WROCK tokens to earn protocol rewards
-- **Flexible Lock Periods**: Choose staking duration for multiplied rewards
-- **Auto-Compounding**: Automatic reinvestment of earned rewards
-- **Liquid Staking**: Receive stWROCK tokens representing staked position
+Stakers earn rewards from two sources: protocol fee distributions (40% of all fund management fees) and points accumulation for future airdrops. The time-weighted points system ensures fair distribution based on both stake amount and duration, creating incentives for long-term protocol alignment.
 
-#### Reward Distribution
-```solidity
-// Staking rewards calculation
-function calculateRewards(address staker) public view returns (uint256) {
-    StakeInfo memory stake = stakes[staker];
-    uint256 timeStaked = block.timestamp - stake.timestamp;
-    uint256 baseReward = (stake.amount * rewardRate * timeStaked) / SECONDS_PER_YEAR;
-    uint256 multiplier = getLockMultiplier(stake.lockPeriod);
-    return baseReward * multiplier / 100;
-}
-```
-
-**Reward Sources:**
-1. **Protocol Fees**: Percentage of all fund management fees
-2. **Performance Fees**: Share of successful fund performance
-3. **Ecosystem Growth**: Treasury allocations for growth incentives
-4. **Partner Rewards**: Integration and partnership revenues
+Importantly, future updates will introduce token-gating requirements where fund creators and agents must maintain minimum staked WROCK balances to participate in the ecosystem, creating additional demand pressure and value accrual for the token
 
 ### 5.3 Points System and Airdrop Mechanism
 
-#### Points Accumulation
-Users earn points through various protocol interactions:
+The protocol implements a points-based reward system where users accumulate points through staking activities. The staking contract uses a time-weighted calculation where 1 WROCK token staked for 365 days earns 1 base point, with bonus multipliers for longer lock periods (up to 100% bonus for 1-year locks).
 
-**Point-Earning Activities:**
-- **Staking Duration**: 100 points per WROCK per day staked
-- **Fund Investment**: 50 points per $100 invested per day
-- **Liquidity Provision**: 150 points per $100 in LP per day
-- **Protocol Usage**: 10 points per transaction
-- **Referrals**: 500 points per successful referral
+Accumulated points can be redeemed for reward tokens through the PointsRedeemer contract, which manages airdrop distributions. The redemption rate is configurable by protocol governance, allowing flexible reward mechanisms as the ecosystem grows. This creates additional value accrual for WROCK stakers beyond protocol fee distributions
 
-#### Points Redeemer Contract
-The Points Redeemer Contract enables users to claim airdropped rewards based on accumulated points:
+### 5.4 Token-Gated Participation (Future Enhancement)
 
-```solidity
-contract PointsRedeemer {
-    mapping(address => uint256) public userPoints;
-    mapping(uint256 => AirdropRound) public airdropRounds;
-    
-    struct AirdropRound {
-        uint256 totalRewards;
-        uint256 totalPoints;
-        uint256 rewardPerPoint;
-        mapping(address => bool) claimed;
-    }
-    
-    function claimAirdrop(uint256 roundId) external {
-        AirdropRound storage round = airdropRounds[roundId];
-        require(!round.claimed[msg.sender], "Already claimed");
-        
-        uint256 userReward = userPoints[msg.sender] * round.rewardPerPoint;
-        round.claimed[msg.sender] = true;
-        
-        IERC20(rewardToken).transfer(msg.sender, userReward);
-        emit AirdropClaimed(msg.sender, roundId, userReward);
-    }
-}
-```
+The protocol will introduce token-gating requirements to align long-term incentives and ensure quality control. Fund creators and agents will need to maintain minimum staked WROCK balances to participate in the ecosystem. This mechanism creates additional demand for WROCK while ensuring participants have skin in the game.
 
-#### Airdrop Schedule
-**Regular Airdrops:**
-- **Monthly Rewards**: Distribution of protocol fees to point holders
-- **Quarterly Bonuses**: Additional rewards for consistent participants
-- **Special Events**: Partnership tokens and new feature launches
-- **Milestone Rewards**: Achievements-based token distributions
-
-**Reward Calculation:**
-```
-User Reward = (User Points / Total Points) * Total Airdrop Amount
-```
-
-### 5.4 Agent Incentives
-
-#### Performance Alignment
-- Fees tied to fund performance metrics
-- Long-term value creation incentives
-- Reputation-based agent selection
-- Staking requirements for fund managers
-
-#### Economic Security
-- Agent stake requirements for fund management
-- Slashing mechanisms for poor performance
-- Insurance funds for investor protection
-- Points multipliers for successful agents
+These staking requirements will scale with fund size and performance, creating natural quality filters and aligning agent incentives with protocol success. The exact parameters will be determined through community governance as the protocol matures
 
 ---
 
@@ -352,103 +105,27 @@ User Reward = (User Points / Total Points) * Total Airdrop Amount
 
 ### 6.1 Smart Contract Security
 
-#### Immutable Token Lists
-- **Fixed at Deployment**: Token whitelists cannot be modified post-deployment
-- **Liquidity Requirements**: Only tokens with proven liquidity profiles
-- **Verified Contracts**: All tokens undergo security verification
-- **No Proxy Contracts**: Preventing malicious upgrades
+Security is enforced through immutable design choices and access control hierarchies. Token lists are fixed at deployment with no ability to add or modify assets. Only verified tokens with proven liquidity profiles are allowed, preventing manipulation through illiquid assets.
 
-#### Access Control Hierarchy
-```solidity
-// Agent permissions are strictly limited
-modifier onlyAgent() {
-    require(msg.sender == agent, "Unauthorized");
-    require(allowedActions[msg.sender]["SET_WEIGHTS"], "Action not permitted");
-    _;
-}
+The contracts implement strict separation of concerns: agents can only adjust weights and trigger rebalances, while only shareholders can withdraw funds. This prevents any possibility of fund drainage by compromised agents. Time-locked parameter changes and emergency pause mechanisms provide additional safety layers.
 
-// Agents cannot access withdrawal functions
-modifier onlyShareOwner() {
-    require(balanceOf(msg.sender) > 0, "Not a shareholder");
-    require(msg.sender != agent, "Agents cannot withdraw");
-    _;
-}
-```
+### 6.2 AI Agent Constraints
 
-#### Fund Drainage Prevention
-- **No Agent Withdrawals**: Agents have zero access to withdrawal functions
-- **User-Only Redemptions**: Only token holders can withdraw their proportional share
-- **Basket Withdrawals**: Users receive all tokens proportionally, not just one
-- **Time-Locked Changes**: Any parameter changes require time delays
-
-### 6.2 AI Agent Security
-
-#### Restricted Action Set
-Agents operate within a sandbox of allowed functions:
-1. `setTargetWeights()` - Only adjust percentages, not token lists
-2. `triggerRebalance()` - Execute trades within constraints
-3. `collectManagementFee()` - Protocol-defined fee collection only
-
-#### Hard-Coded Constraints
-```solidity
-// Example: Agents cannot add new tokens
-function addToken(address token) external {
-    revert("Token list is immutable");
-}
-
-// Example: Agents cannot withdraw funds
-function emergencyWithdraw() external onlyOwner {
-    require(msg.sender != agent, "Agents cannot withdraw");
-    // Emergency withdrawal logic
-}
-```
-
-#### Real-Time Monitoring
-- On-chain activity tracking for anomaly detection
-- Automatic circuit breakers for unusual patterns
-- Community-driven security alerts
-- Transparent decision logs for all agent actions
+Agents operate within a hardcoded sandbox limited to three functions: setting target weights, triggering rebalances, and collecting protocol-defined fees. The smart contracts explicitly prevent agents from adding tokens, withdrawing funds, or executing arbitrary transactions. All agent actions are logged on-chain, creating transparent audit trails for performance analysis and security monitoring
 
 ---
 
 ## 7. Governance and Decentralization
 
-### 7.1 Protocol Governance
+### 7.1 Protocol Development
 
-#### Decentralized Decision Making
-- Community-driven protocol upgrades
-- Parameter adjustment proposals
-- Agent certification processes
-- Staking-weighted voting power
+WhackRock Protocol development follows a community-driven approach with protocol upgrades, parameter adjustments, and agent certification processes managed through decentralized governance mechanisms. Future implementations will introduce formal governance structures as the protocol matures and decentralizes further
 
-#### Governance Token (WROCK)
-- **Voting Rights**: Proportional to staked WROCK amount
-- **Fee Distribution**: Stakers receive share of protocol fees
-- **Lock Multipliers**: Longer stakes receive more voting power
-- **Delegation**: Ability to delegate voting power while staking
+### 7.2 Ecosystem Growth Dynamics
 
-#### Voting Power Calculation
-```solidity
-function getVotingPower(address user) public view returns (uint256) {
-    StakeInfo memory stake = stakes[user];
-    uint256 basePower = stake.amount;
-    uint256 lockMultiplier = getLockMultiplier(stake.lockPeriod);
-    uint256 loyaltyBonus = calculateLoyaltyBonus(user);
-    return (basePower * lockMultiplier * loyaltyBonus) / 10000;
-}
-```
+The WhackRock ecosystem creates natural growth dynamics through aligned incentives. As successful funds attract more AUM, they generate higher fees that flow to WROCK stakers. This creates a virtuous cycle where protocol success directly benefits token holders.
 
-### 7.2 Agent Ecosystem
-
-#### Agent Standards
-- Standardized interfaces for fund management
-- Performance benchmarking frameworks
-- Community-driven agent development
-
-#### Marketplace Dynamics
-- Competition among AI agents
-- Performance-based fund allocation
-- Investor choice and fund migration
+Competition among AI agents drives innovation and performance improvements. Transparent on-chain performance tracking allows investors to easily compare strategies and migrate between funds, ensuring only the best agents thrive. This market-driven selection process continuously improves the quality of available investment strategies
 
 ---
 
@@ -456,129 +133,53 @@ function getVotingPower(address user) public view returns (uint256) {
 
 ### 8.1 Smart Contract Architecture
 
-#### Key Functions with Access Controls
-```solidity
-// Public Functions - Available to All Users
-function deposit(uint256 amount, address receiver) external returns (uint256 shares)
-function withdraw(uint256 shares, address receiver, address owner) external  // AGENT CANNOT CALL
-
-// Agent-Only Functions - Restricted Permissions
-function setTargetWeights(uint256[] weights) external onlyAgent  // Must sum to 10000 bps
-function triggerRebalance() external onlyAgent  // Only trades whitelisted tokens
-
-// Forbidden Functions - What Agents CANNOT Do
-function addAllowedToken(address token) external  // DOES NOT EXIST - Tokens are immutable
-function transferFunds(address to, uint256 amount) external  // DOES NOT EXIST - No direct transfers
-function updateAllowedTokens(address[] tokens) external  // DOES NOT EXIST - Cannot change token list
-function emergencyWithdraw() external onlyOwner  // OWNER ONLY - Agent cannot call
-```
+The fund contracts expose a minimal interface split between public functions (deposit, withdraw) and agent-restricted functions (setTargetWeights, triggerRebalance). Critical security is achieved through what the contracts don't implement: no functions exist for adding tokens, transferring funds directly, or modifying security parameters.
 
 ### 8.2 GAME Agent Integration
 
-#### Agent Communication
-```python
-# GAME agent signal generation
-def generate_investment_signal(market_data):
-    analysis = worker.analyze_market_conditions(market_data)
-    weights = worker.optimize_portfolio(analysis)
-    return {
-        'target_weights': weights,
-        'confidence': analysis.confidence,
-        'reasoning': analysis.explanation
-    }
-```
-
-#### On-Chain Execution
-Agents interact with fund contracts through:
-- Authenticated API calls
-- Cryptographic signature verification
-- Rate limiting and access controls
+GAME agents generate investment signals off-chain and execute them through authenticated contract calls. The integration ensures agents can only call their permitted functions, with all actions verified through cryptographic signatures and rate limiting to prevent abuse
 
 ---
 
-## 9. Use Cases and Applications
+## 9. WROCK Token Value Proposition
 
-### 9.1 For AI Developers
+### 9.1 Direct Value Accrual Mechanisms
 
-#### Agent Development
-- Deploy sophisticated investment strategies
-- Build verifiable performance track records
-- Monetize AI capabilities through fund management
+**Protocol Fee Distribution**: WROCK stakers receive 40% of all management fees collected across the entire fund ecosystem. As AUM grows from millions to billions, this creates a substantial and increasing revenue stream for token holders.
 
-#### Revenue Opportunities
-- Performance-based fee collection
-- Agent licensing to multiple funds
-- Consulting services for fund creation
+**Token-Gated Access**: Future implementation of staking requirements for fund creation and management creates persistent demand for WROCK tokens. Larger funds and more successful agents will require higher stake amounts, creating natural buy pressure.
 
-### 9.2 For Investors
+**Points-Based Rewards**: Time-weighted staking earns points redeemable for additional token distributions, creating compound returns for long-term holders. The flexible redemption mechanism allows protocol governance to optimize reward distribution as the ecosystem evolves.
 
-#### Diversified Exposure
-- Access to multiple AI strategies
-- Diversified portfolio management
-- Professional-grade investment tools
-- Staking rewards for long-term holders
+### 9.2 Network Effects and Growth Dynamics
 
-#### Risk Management
-- Transparent performance tracking
-- On-demand liquidity
-- Regulated smart contract environment
-- Insurance through protocol reserves
+WROCK benefits from powerful network effects: more funds attract more investors, generating more fees for stakers, which attracts more funds in a virtuous cycle. As the protocol becomes the standard for AI-managed investments, WROCK captures value from the entire ecosystem's growth.
 
-#### Staking Benefits
-- **Protocol Rewards**: Earn fees from all fund operations
-- **Governance Power**: Influence protocol development
-- **Airdrop Eligibility**: Access to partner token distributions
-- **Points Accumulation**: Build position for future rewards
-
-### 9.3 For Fund Managers
-
-#### Operational Efficiency
-- Automated portfolio management
-- Reduced operational overhead
-- Scalable fund administration
-
-#### Innovation Platform
-- Experiment with AI strategies
-- Access to cutting-edge technology
-- Community-driven development
+The token's value is fundamentally tied to protocol adoption. Every new fund launched, every dollar of AUM added, and every successful investment strategy developed directly benefits WROCK holders through increased fee generation and ecosystem participation requirements
 
 ---
 
 ## 10. Future Developments
 
-### 10.1 Protocol Enhancements
+### 10.1 Protocol Roadmap
 
-#### Advanced Features
-- Cross-chain fund management
-- Institutional custody integration
-- Regulatory compliance modules
+Near-term developments focus on implementing token-gating mechanisms, expanding supported assets, and optimizing gas costs through Layer 2 integration. The protocol will introduce graduated staking requirements based on fund size and performance metrics.
 
-#### Performance Improvements
-- Gas optimization strategies
-- Layer 2 scaling solutions
-- Enhanced oracle systems
+Medium-term goals include cross-chain expansion to capture broader DeFi opportunities, institutional custody integration for traditional finance participation, and advanced agent capabilities through continued GAME SDK development.
 
 ### 10.2 Ecosystem Expansion
 
-#### Integration Partnerships
-- Traditional finance bridges
-- DeFi protocol integrations
-- Institutional adoption pathways
-
-#### Community Growth
-- Developer incentive programs
-- Educational initiatives
-- Research partnerships
+The protocol aims to become the standard infrastructure for AI-managed investments across DeFi. Strategic partnerships with AI developers, integration with major DeFi protocols, and educational initiatives will drive adoption. As regulatory frameworks develop, WhackRock will adapt to enable compliant institutional participation while maintaining decentralization
 
 ---
 
 ## 11. Conclusion
 
-WhackRock Protocol represents a paradigm shift in investment management, combining the sophistication of AI-driven strategies with the transparency and security of blockchain technology. By providing standardized infrastructure for AI-managed funds, the protocol enables unprecedented innovation in autonomous finance while maintaining investor protection and market integrity.
+WhackRock Protocol creates a new paradigm for investment management where AI agents operate sophisticated strategies within secure, transparent smart contracts. The WROCK token captures value from this revolution through direct fee distribution, ecosystem participation requirements, and network effects that compound with growth.
 
-The integration with GAME SDK ensures that fund managers have access to state-of-the-art AI capabilities, while the decentralized architecture guarantees transparency and eliminates single points of failure. As the protocol evolves, it will continue to push the boundaries of what's possible in autonomous financial management, creating new opportunities for developers, investors, and the broader DeFi ecosystem.
+As AUM scales from current levels to billions under management, WROCK holders benefit proportionally from every dollar managed by the protocol. The combination of immediate fee distribution, future token-gating, and points-based rewards creates multiple value accrual mechanisms that align with long-term protocol success.
 
-Through WhackRock Protocol, the future of finance is not just automated, it's transparent, accountable, and accessible to all.
+By solving the trust problem in AI-managed investments, WhackRock enables a future where anyone can access sophisticated investment strategies previously reserved for institutions, while token holders capture the value created by this democratization of finance
 
 ---
 
