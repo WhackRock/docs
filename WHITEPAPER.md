@@ -7,19 +7,19 @@
 
 ## Abstract
 
-WhackRock Protocol establishes a decentralized infrastructure for AI-managed investment funds on Base, enabling AI agents to manage tokenized investment vehicles while ensuring investor protection through immutable smart contracts. The protocol integrates with GAME SDK (Virtuals Protocol) to provide sophisticated AI tooling for agentic portfolio management.
+WhackRock Protocol establishes a decentralized infrastructure for AI-managed investment funds on Base, enabling AI agents to manage tokenized investment vehicles while ensuring investor protection through immutable smart contracts. The protocol integrates with GAME SDK (Virtuals Protocol) to provide Model Context Protocol (MCP) tooling for agentic portfolio management.
 
 The WROCK token captures value from the entire ecosystem through protocol fee distribution. As total assets under management (AUM) grow across all funds, WROCK stakers receive 40% of all management fees collected, creating direct alignment between protocol growth and token value. With planned token-gating for fund creation and management, WROCK becomes essential infrastructure for participating in AI investments.
 
-AI agents operate within strict security constraints: they can only trade pre-specified tokens defined at fund creation, cannot add new assets or withdraw funds, and are limited to portfolio weight adjustments and rebalancing. All constraints are enforced at the smart contract level, ensuring investor assets remain secure while enabling sophisticated autonomous strategies
+AI agents operate within strict security constraints: they can only trade pre-specified tokens defined at fund creation, cannot add new assets or withdraw funds, and are limited to portfolio weight adjustments and rebalancing. All constraints are enforced at the smart contract level, ensuring investor assets remain secure while enabling sophisticated autonomous strategies.
 
 ---
 
 ## 1. Introduction
 
-The emergence of AI-driven investment strategies has created significant opportunities, but current implementations operate in black boxes without verifiable performance tracking, create centralized points of failure, and lack standardized frameworks for comparison.
+The emergence of agentic investment strategies has created significant opportunities, but current implementations operate in black boxes without verifiable performance tracking, create centralized points of failure, and lack standardized frameworks for comparison.
 
-WhackRock Protocol solves these challenges through transparent on-chain operations, standardized smart contract infrastructure, decentralized architecture, and verifiable performance tracking. Every fund action is recorded immutably, creating accountability and trust in AI-managed investments
+WhackRock Protocol solves these challenges through transparent on-chain operations, standardized smart contract infrastructure, and MCP-enabled agent tooling. Every fund action is recorded immutably, creating accountability and trust in agentic portfolio management.
 
 ---
 
@@ -33,13 +33,13 @@ The protocol consists of three main components working in harmony:
 
 **Fund Contracts**: Individual ERC20-based investment vehicles implementing portfolio management, automatic rebalancing, fee collection, and TWAP-based pricing for accurate valuations.
 
-**AI Agent Integration**: The connection layer between GAME SDK agents and fund contracts, providing standardized interfaces, permission controls, and audit trails for all decisions
+**Agent Integration Layer**: The MCP-enabled connection between GAME SDK agents and fund contracts, providing standardized tooling, permission controls, and audit trails for all agentic decisions.
 
-### 2.2 GAME SDK Integration with Security Constraints
+### 2.2 GAME SDK and MCP Integration with Security Constraints
 
-WhackRock leverages GAME SDK to power AI agents while maintaining strict security through smart contract enforcement. Agents receive limited permissions at deployment, restricting them to portfolio weight adjustments and rebalancing triggers only.
+WhackRock leverages GAME SDK with MCP tooling to power agents while maintaining strict security through smart contract enforcement. Agents receive limited permissions at deployment, restricting them to portfolio weight adjustments and rebalancing triggers only.
 
-Critical security constraints are hardcoded: agents cannot withdraw funds, add new tokens, change fund parameters, or execute arbitrary transactions. Token lists are immutable after fund creation, ensuring agents can only trade pre-approved, highly liquid assets that passed security validation. This sandbox approach enables sophisticated AI strategies while protecting investor assets
+Critical security constraints are hardcoded: agents cannot withdraw funds, add new tokens, change fund parameters, or execute arbitrary transactions. Token lists are immutable after fund creation, ensuring agents can only trade pre-approved, highly liquid assets that passed security validation. This sandbox approach enables sophisticated agentic strategies while protecting investor assets.
 
 ---
 
@@ -49,13 +49,13 @@ Critical security constraints are hardcoded: agents cannot withdraw funds, add n
 
 Fund creation requires configuring a GAME agent with specific investment strategies and deploying an immutable fund contract. The process involves selecting verified tokens (which cannot be changed post-deployment), setting initial portfolio weights, and configuring security parameters like slippage protection and rebalance thresholds.
 
-Each fund operates with hardcoded constraints: agents receive only weight adjustment and rebalancing permissions, token lists remain immutable, and all security parameters are enforced at the contract level. This ensures consistent security across all funds while allowing diverse investment strategies
+Each fund operates with hardcoded constraints: agents receive only weight adjustment and rebalancing permissions, token lists remain immutable, and all security parameters are enforced at the contract level. This ensures consistent security across all funds while allowing diverse investment strategies.
 
-### 3.2 AI Fund Management Operations
+### 3.2 Agentic Fund Management Operations
 
-GAME agents operate within strict boundaries enforced by smart contracts. They continuously monitor market conditions for whitelisted tokens, calculate optimal portfolio weights, and trigger rebalancing when allocations deviate from targets.
+GAME agents utilize MCP tools to operate within strict boundaries enforced by smart contracts. They continuously monitor market conditions for whitelisted tokens, calculate optimal portfolio weights, and trigger rebalancing when allocations deviate from targets.
 
-The security model is absolute: agents cannot add tokens, withdraw funds, or override any security parameters. Every action requires smart contract validation, trades execute through secure DEX integrations, and fund assets never leave the contract's custody. Users maintain full control with the ability to withdraw their proportional share at any time
+The security model is absolute: agents cannot add tokens, withdraw funds, or override any security parameters. Every action requires smart contract validation, trades execute through secure DEX integrations, and fund assets never leave the contract's custody. Users maintain full control with the ability to withdraw their proportional share at any time.
 
 ---
 
@@ -67,7 +67,7 @@ Investors participate by depositing WETH into funds and receiving ERC20 shares r
 
 ### 4.2 Portfolio Rebalancing
 
-Funds automatically rebalance when portfolio weights deviate beyond configured thresholds (typically 1-5%). The rebalancing process monitors weight deviations, executes trades through Uniswap V3, and restores target allocations. TWAP pricing and slippage protection ensure fair execution while protecting against MEV attacks
+Funds automatically rebalance when portfolio weights deviate beyond configured thresholds (typically 1-5%). The rebalancing process monitors weight deviations, executes trades through Uniswap V3, and restores target allocations. TWAP pricing and slippage protection ensure fair execution while protecting against MEV attacks.
 
 ---
 
@@ -97,7 +97,7 @@ Accumulated points can be redeemed for reward tokens through the PointsRedeemer 
 
 The protocol will introduce token-gating requirements to align long-term incentives and ensure quality control. Fund creators and agents will need to maintain minimum staked WROCK balances to participate in the ecosystem. This mechanism creates additional demand for WROCK while ensuring participants have skin in the game.
 
-These staking requirements will scale with fund size and performance, creating natural quality filters and aligning agent incentives with protocol success. The exact parameters will be determined through community governance as the protocol matures
+These staking requirements will scale with fund size and performance, creating natural quality filters and aligning agent incentives with protocol success. Token-gating ensures only committed participants can deploy agents with MCP tooling access
 
 ---
 
@@ -109,9 +109,9 @@ Security is enforced through immutable design choices and access control hierarc
 
 The contracts implement strict separation of concerns: agents can only adjust weights and trigger rebalances, while only shareholders can withdraw funds. This prevents any possibility of fund drainage by compromised agents. Time-locked parameter changes and emergency pause mechanisms provide additional safety layers.
 
-### 6.2 AI Agent Constraints
+### 6.2 Agent Constraints
 
-Agents operate within a hardcoded sandbox limited to three functions: setting target weights, triggering rebalances, and collecting protocol-defined fees. The smart contracts explicitly prevent agents from adding tokens, withdrawing funds, or executing arbitrary transactions. All agent actions are logged on-chain, creating transparent audit trails for performance analysis and security monitoring
+Agents operate within a hardcoded sandbox limited to three functions: setting target weights, triggering rebalances, and collecting protocol-defined fees. The smart contracts explicitly prevent agents from adding tokens, withdrawing funds, or executing arbitrary transactions. All agent actions are logged on-chain, creating transparent audit trails for performance analysis and security monitoring of MCP tool usage
 
 ---
 
@@ -125,7 +125,7 @@ WhackRock Protocol development follows a community-driven approach with protocol
 
 The WhackRock ecosystem creates natural growth dynamics through aligned incentives. As successful funds attract more AUM, they generate higher fees that flow to WROCK stakers. This creates a virtuous cycle where protocol success directly benefits token holders.
 
-Competition among AI agents drives innovation and performance improvements. Transparent on-chain performance tracking allows investors to easily compare strategies and migrate between funds, ensuring only the best agents thrive. This market-driven selection process continuously improves the quality of available investment strategies
+Competition among agents drives innovation and performance improvements. Transparent on-chain performance tracking allows investors to easily compare agentic strategies and migrate between funds, ensuring only the best agents thrive. This market-driven selection process continuously improves the quality of available MCP-powered investment strategies
 
 ---
 
@@ -135,9 +135,9 @@ Competition among AI agents drives innovation and performance improvements. Tran
 
 The fund contracts expose a minimal interface split between public functions (deposit, withdraw) and agent-restricted functions (setTargetWeights, triggerRebalance). Critical security is achieved through what the contracts don't implement: no functions exist for adding tokens, transferring funds directly, or modifying security parameters.
 
-### 8.2 GAME Agent Integration
+### 8.2 GAME Agent and MCP Integration
 
-GAME agents generate investment signals off-chain and execute them through authenticated contract calls. The integration ensures agents can only call their permitted functions, with all actions verified through cryptographic signatures and rate limiting to prevent abuse
+GAME agents utilize MCP tools to generate investment signals and execute them through authenticated contract calls. The integration ensures agents can only call their permitted functions, with all actions verified through cryptographic signatures and rate limiting to prevent abuse
 
 ---
 
@@ -169,17 +169,17 @@ Medium-term goals include cross-chain expansion to capture broader DeFi opportun
 
 ### 10.2 Ecosystem Expansion
 
-The protocol aims to become the standard infrastructure for AI-managed investments across DeFi. Strategic partnerships with AI developers, integration with major DeFi protocols, and educational initiatives will drive adoption. As regulatory frameworks develop, WhackRock will adapt to enable compliant institutional participation while maintaining decentralization
+The protocol aims to become the standard infrastructure for agentic investments across DeFi. Strategic partnerships with agent developers, integration with major DeFi protocols, and MCP tooling enhancements will drive adoption. As regulatory frameworks develop, WhackRock will adapt to enable compliant institutional participation while maintaining decentralization
 
 ---
 
 ## 11. Conclusion
 
-WhackRock Protocol creates a new paradigm for investment management where AI agents operate sophisticated strategies within secure, transparent smart contracts. The WROCK token captures value from this revolution through direct fee distribution, ecosystem participation requirements, and network effects that compound with growth.
+WhackRock Protocol creates a new paradigm for investment management where agents operate sophisticated strategies using MCP tooling within secure, transparent smart contracts. The WROCK token captures value from this revolution through direct fee distribution, ecosystem participation requirements, and network effects that compound with growth.
 
 As AUM scales from current levels to billions under management, WROCK holders benefit proportionally from every dollar managed by the protocol. The combination of immediate fee distribution, future token-gating, and points-based rewards creates multiple value accrual mechanisms that align with long-term protocol success.
 
-By solving the trust problem in AI-managed investments, WhackRock enables a future where anyone can access sophisticated investment strategies previously reserved for institutions, while token holders capture the value created by this democratization of finance
+By solving the trust problem in agentic investments, WhackRock enables a future where anyone can access sophisticated MCP-powered strategies previously reserved for institutions, while token holders capture the value created by this democratization of finance
 
 ---
 
